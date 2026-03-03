@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d1yk6gqfpqj2j"]
+
+[ext_resource type="Script" uid="uid://dtbudg82cfhe8" path="res://Scripts/proc_mesh.gd" id="1_byomg"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" unique_id=753976568]
+script = ExtResource("1_byomg")

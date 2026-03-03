@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://cfc2rjq4i7dw" path="res://Scenes/client.tscn" id="1_gk1fw"]
 [ext_resource type="Script" uid="uid://hnow4x34sl2k" path="res://Scenes/world_root.gd" id="1_jvqgh"]
-[ext_resource type="MeshLibrary" uid="uid://clsguaq6y8rbk" path="res://MeshLibraries/blocks.tres" id="3_jvqgh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gk1fw"]
 sky_top_color = Color(0.086280264, 0.4347605, 0.8512977, 1)
@@ -20,9 +19,6 @@ ambient_light_source = 3
 reflected_light_source = 2
 tonemap_mode = 2
 
-[sub_resource type="BoxMesh" id="BoxMesh_jvqgh"]
-size = Vector3(16, 16, 16)
-
 [node name="WorldRoot" type="Node3D" unique_id=717806810]
 script = ExtResource("1_jvqgh")
 dayColor = Color(0.35276523, 0.5527526, 1, 1)
@@ -33,18 +29,7 @@ nightColor = Color(0.27501786, 0.2652255, 0.5410092, 1)
 environment = SubResource("Environment_jvqgh")
 
 [node name="Client" parent="." unique_id=185208340 instance=ExtResource("1_gk1fw")]
-ip = "20.19.33.224"
 username = "PixelBrushArt"
-
-[node name="GridMap" type="GridMap" parent="." unique_id=1963486432]
-mesh_library = ExtResource("3_jvqgh")
-cell_size = Vector3(1, 1, 1)
-cell_octant_size = 16
-metadata/_editor_floor_ = Vector3(0, 0, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=827072457]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 8, 8)
-mesh = SubResource("BoxMesh_jvqgh")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=2089904004]
 transform = Transform3D(0.9800672, -0.13851842, -0.14241175, 0.19866666, 0.6833422, 0.702549, -2.536571e-08, -0.7168375, 0.6972402, 207.96223, 81.65073, 0)

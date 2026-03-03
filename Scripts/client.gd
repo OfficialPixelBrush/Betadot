@@ -3,6 +3,7 @@ extends Node
 @onready var player: Node3D = $Player
 @onready var camera_3d: Camera3D = $Player/Camera3D
 @onready var chat_lines: RichTextLabel = $Control/VBoxContainer/ChatLines
+@onready var mesh_instance_3d: MeshInstance3D = $"../MeshInstance3D"
 
 @onready var root = get_tree().current_scene
 
@@ -313,43 +314,30 @@ func ReadMobMetadata(e = null):
 				print("Unknown metadata type:", type)
 				return
 
-func PosToIndex(pos : Vector3i) -> int:
-	return pos.y + (pos.z*128) + (pos.x*16*128)
+var chunks: Dictionary = {}  # Vector3i -> MeshInstance3D
+var chunk_scene: PackedScene  # preload your MeshInstance3D scene
 
-func CanCheck(pos : Vector3i) -> bool:
-	return pos.y >= 0 && pos.y < 128 && pos.x >= 0 && pos.x < 16 && pos.z >= 0 && pos.z < 16;
-
-func GetBlock(pos : Vector3i, data : PackedByteArray) -> int:
-	var index = PosToIndex(pos);
-	if (CanCheck(pos) && index < data.size()):
-		return data[index]
-	return 1;
-
-func IsSurrounded(pos : Vector3i, data : PackedByteArray) -> bool:
-	return (
-		GetBlock(pos + Vector3i(+0,+0,+1), data) > 0 &&
-		GetBlock(pos + Vector3i(+0,+1,+0), data) > 0 &&
-		GetBlock(pos + Vector3i(+1,+0,+0), data) > 0 &&
-		GetBlock(pos + Vector3i(+0,+0,-1), data) > 0 &&
-		GetBlock(pos + Vector3i(+0,-1,+0), data) > 0 &&
-		GetBlock(pos + Vector3i(-1,+0,+0), data) > 0
-	);
-
-func DecompressChunk(pos: Vector3i, size: Vector3i, data: PackedByteArray):
-	var expected_size = int((size.x * size.y * size.z) * 2.5)  # example if each block is 2 bytes
+func DecompressChunk(pos: Vector3i, size: Vector3i, data: PackedByteArray) -> void:
+	var expected_size = (size.x * size.y * size.z * 2.5)
 	var decompressed = data.decompress_dynamic(expected_size, FileAccess.COMPRESSION_DEFLATE)
-	#cm.GenerateMesh(decompressed)
-	for x in range(size.x):
-		for z in range(size.z):
-			for y in range(size.y):
-				var off = Vector3i(x,y,z);
-				if (!IsSurrounded(off,decompressed)):
-					root.PlaceBlock(pos+off, decompressed[PosToIndex(off)])
+	
+	# Get or create chunk instance
+	var chunk: MeshInstance3D
+	if chunks.has(pos):
+		chunk = chunks[pos]
+	else:
+		chunk = preload("res://Scenes/chunk.tscn").instantiate()
+		get_tree().current_scene.add_child(chunk)
+		chunk.position = pos  # world position
+		chunks[pos] = chunk
+	
+	chunk.generate_chunk_async(size, decompressed)
+
+func RemoveChunk(pos: Vector3i) -> void:
+	if chunks.has(pos):
+		chunks[pos].queue_free()
+		chunks.erase(pos)
 
 func ClearChunk(cpos: Vector2i):
 	var pos = Vector3i(cpos.x*16,0,cpos.y*16)
-	for x in range(16):
-		for z in range(16):
-			for y in range(128):
-				var off = Vector3i(x,y,z);
-				root.PlaceBlock(pos+off, -1)
+				#root.PlaceBlock(pos+off, -1)

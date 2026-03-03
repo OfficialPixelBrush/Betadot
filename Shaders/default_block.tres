@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ccgna5fonvlyx"]
+
+[ext_resource type="Texture2D" uid="uid://d2n5tdkt4bxu2" path="res://Textures/terrain.png" id="1_cbqk5"]
+
+[resource]
+transparency = 1
+shading_mode = 0
+specular_mode = 2
+disable_ambient_light = true
+albedo_texture = ExtResource("1_cbqk5")
+texture_filter = 2

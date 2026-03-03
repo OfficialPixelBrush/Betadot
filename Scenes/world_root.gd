@@ -85,9 +85,3 @@ func _process(delta: float) -> void:
 	dayProgress += delta*20.0
 	dayProgress = fmod(dayProgress, float(lengthOfDay))
 	UpdateSky()
-
-func PlaceBlock(pos : Vector3i, type : int):
-	if (type < 1):
-		grid_map.set_cell_item(pos,-1)
-	else:
-		grid_map.set_cell_item(pos,0)
