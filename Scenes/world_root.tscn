@@ -42,8 +42,6 @@ nightColor = Color(0.27501786, 0.2652255, 0.5410092, 1)
 environment = SubResource("Environment_jvqgh")
 
 [node name="Client" parent="." unique_id=185208340 instance=ExtResource("1_gk1fw")]
-ip = "20.19.33.224"
-username = "PixelBrushArt"
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=2089904004]
 transform = Transform3D(0.9800672, -0.13851842, -0.14241175, 0.19866666, 0.6833422, 0.702549, -2.536571e-08, -0.7168375, 0.6972402, 207.96223, 81.65073, 0)

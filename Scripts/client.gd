@@ -7,10 +7,6 @@ extends Node
 
 @onready var root = get_tree().current_scene
 
-@export var ip: String = "127.0.0.1"
-@export var port: int = 25565
-@export var username: String = "Player"
-
 @onready var net = preload("res://Scripts/network.gd").new()
 
 enum LoginState {
@@ -29,8 +25,8 @@ var worldSeed : int = 0;
 var dimension : int = 0;
 var loginState : LoginState = LoginState.OFFLINE;
 
-func _ready():
-	net.ConnectToHost(ip,port)
+func _ready() -> void:
+	net.ConnectToHost(Global.ip,Global.port)
 	loginState = LoginState.HANDSHAKE;
 
 func _physics_process(_delta: float) -> void:
@@ -271,13 +267,13 @@ func HandlePacket():
 
 func WriteHandshake():
 	net.WriteByte(Enum.Packet.HANDSHAKE)
-	net.WriteString16(username)
+	net.WriteString16(Global.username)
 	net.SendPacket()
 
 func WriteLogin():
 	net.WriteByte(Enum.Packet.LOGIN)
 	net.WriteInteger(14);
-	net.WriteString16(username);
+	net.WriteString16(Global.username);
 	net.WriteLong(0);
 	net.WriteByte(0);
 	net.SendPacket()
