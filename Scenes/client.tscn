@@ -2,13 +2,32 @@
 
 [ext_resource type="Script" uid="uid://b61pu2l0p2tcn" path="res://Scripts/client.gd" id="1_de1uw"]
 [ext_resource type="Script" uid="uid://clglu4ea5de3n" path="res://Scripts/player.gd" id="2_o4a6k"]
+[ext_resource type="Texture2D" uid="uid://b3dsdlh3umsac" path="res://Textures/char.png" id="3_v1moc"]
+[ext_resource type="Theme" uid="uid://2cfp4i5gebcy" path="res://Gui/minecraft_theme.tres" id="4_wuhft"]
+[ext_resource type="Script" uid="uid://dj8j6ewc36570" path="res://Scripts/chat_box.gd" id="5_8r6hp"]
+[ext_resource type="Script" uid="uid://ofoicqflydmn" path="res://Scripts/disconnect_button.gd" id="5_urhfn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuhft"]
+depth_draw_mode = 1
+no_depth_test = true
+shading_mode = 2
+diffuse_mode = 1
+specular_mode = 2
+albedo_texture = ExtResource("3_v1moc")
+uv1_scale = Vector3(0.188, 0.72, 0.375)
+uv1_offset = Vector3(0.625, 0.64, 0)
+texture_filter = 0
+disable_receive_shadows = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_urhfn"]
+material = SubResource("StandardMaterial3D_wuhft")
+size = Vector3(0.3, 1, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_de1uw"]
 size = Vector3(0.5, 1.8, 0.5)
 
 [node name="Client" type="Node3D" unique_id=122293048]
 script = ExtResource("1_de1uw")
-username = "Notch"
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=1399401798]
 script = ExtResource("2_o4a6k")
@@ -16,6 +35,10 @@ script = ExtResource("2_o4a6k")
 [node name="Camera3D" type="Camera3D" parent="Player" unique_id=1705068956]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 current = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/Camera3D" unique_id=1443288357]
+transform = Transform3D(0.6493336, -0.11589035, 1.0024647, 0.9202103, -0.42130524, -0.6447596, 0.41422084, 1.1176186, -0.13910344, 0.536, -0.96, -1.132)
+mesh = SubResource("BoxMesh_urhfn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1877978222]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -42,5 +65,55 @@ grow_vertical = 0
 
 [node name="ChatLines" type="RichTextLabel" parent="Control/VBoxContainer" unique_id=1070192264]
 layout_mode = 2
+size_flags_vertical = 10
+theme = ExtResource("4_wuhft")
 bbcode_enabled = true
 fit_content = true
+vertical_alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="Control/VBoxContainer" unique_id=706456420]
+visible = false
+layout_mode = 2
+theme = ExtResource("4_wuhft")
+max_length = 114
+script = ExtResource("5_8r6hp")
+
+[node name="PauseMenu" type="ColorRect" parent="Control" unique_id=950092261]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PauseMenu" unique_id=963140991]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PauseMenu/HBoxContainer" unique_id=1142522155]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button2" type="Button" parent="Control/PauseMenu/HBoxContainer/VBoxContainer" unique_id=1116987587]
+layout_mode = 2
+theme = ExtResource("4_wuhft")
+text = "Return to game"
+
+[node name="Button" type="Button" parent="Control/PauseMenu/HBoxContainer/VBoxContainer" unique_id=757091190]
+layout_mode = 2
+theme = ExtResource("4_wuhft")
+text = "Disconnect"
+script = ExtResource("5_urhfn")
+
+[connection signal="text_submitted" from="Control/VBoxContainer/LineEdit" to="Control/VBoxContainer/LineEdit" method="_on_text_submitted"]
+[connection signal="pressed" from="Control/PauseMenu/HBoxContainer/VBoxContainer/Button2" to="Player" method="_on_return_to_game"]
+[connection signal="pressed" from="Control/PauseMenu/HBoxContainer/VBoxContainer/Button" to="Control/PauseMenu/HBoxContainer/VBoxContainer/Button" method="_on_pressed"]

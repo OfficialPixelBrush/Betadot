@@ -1,7 +1,6 @@
 extends Node3D
 
 var playerEntity = preload("res://Scenes/player_entity.tscn")
-@onready var grid_map: GridMap = $GridMap
 @onready var sun: DirectionalLight3D = $Sun
 @onready var world_environment: WorldEnvironment = $WorldEnvironment
 var skyMat : ProceduralSkyMaterial;

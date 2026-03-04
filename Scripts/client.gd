@@ -3,7 +3,6 @@ extends Node
 @onready var player: Node3D = $Player
 @onready var camera_3d: Camera3D = $Player/Camera3D
 @onready var chat_lines: RichTextLabel = $Control/VBoxContainer/ChatLines
-@onready var mesh_instance_3d: MeshInstance3D = $"../MeshInstance3D"
 
 @onready var root = get_tree().current_scene
 
@@ -61,7 +60,9 @@ func sanitize_text(s: String) -> String:
 			result += c
 	
 	return result
-	
+
+var chat_history: Array = []
+
 func HandlePacket():
 	var packetId = net.ReadByte();
 	match(packetId):
@@ -90,9 +91,8 @@ func HandlePacket():
 		Enum.Packet.TIME:
 			root.UpdateTime(net.ReadLong())
 		Enum.Packet.CHAT_MESSAGE:
-			var text = sanitize_text(net.ReadString16());
-			print(text)
-			chat_lines.text = text
+			var text = sanitize_text(net.ReadString16())
+			UpdateChatBox(text)
 		Enum.Packet.SET_HEALTH:
 			net.ReadShort()
 		Enum.Packet.PLAYER_POSITION_LOOK:
@@ -260,7 +260,7 @@ func HandlePacket():
 			print("Disconnected by Server!")
 			print(net.ReadString16())
 			loginState = LoginState.OFFLINE
-			get_tree().quit()
+			Global.unload_game()
 		_:
 			print("Unknown! (0x%X)" % packetId)
 			get_tree().quit()
@@ -287,6 +287,16 @@ func WritePositionLook():
 	net.WriteFloat(180.0-player.global_rotation_degrees.y)
 	net.WriteFloat(-camera_3d.global_rotation_degrees.x)
 	net.WriteBoolean(1)
+	net.SendPacket()
+
+func WriteDisconnect(msg: String) -> void:
+	net.WriteByte(Enum.Packet.DISCONNET)
+	net.WriteString16(msg)
+	net.SendPacket()
+
+func WriteChatMessage(msg: String) -> void:
+	net.WriteByte(Enum.Packet.CHAT_MESSAGE)
+	net.WriteString16(msg)
 	net.SendPacket()
 
 func ReadMobMetadata(e = null):
@@ -386,3 +396,79 @@ func RemoveChunk(pos: Vector3i) -> void:
 func ClearChunk(cpos: Vector2i):
 	var pos = Vector3i(cpos.x*16,0,cpos.y*16)
 				#root.PlaceBlock(pos+off, -1)
+
+func parse_minecraft_formatting(msg: String) -> String:
+	var result = ""
+	var i = 0
+	var open_tags = []
+
+	# Minecraft color/format code map to BBCode
+	var color_map = {
+		"0": "#000000",  # Black
+		"1": "#0000AA",  # Dark Blue
+		"2": "#00AA00",  # Dark Green
+		"3": "#00AAAA",  # Dark Aqua
+		"4": "#AA0000",  # Dark Red
+		"5": "#AA00AA",  # Dark Purple
+		"6": "#FFAA00",  # Gold
+		"7": "#AAAAAA",  # Gray
+		"8": "#555555",  # Dark Gray
+		"9": "#5555FF",  # Blue
+		"a": "#55FF55",  # Green
+		"b": "#55FFFF",  # Aqua
+		"c": "#FF5555",  # Red
+		"d": "#FF55FF",  # Light Purple
+		"e": "#FFFF55",  # Yellow
+		"f": "#FFFFFF",  # White
+	}
+
+	while i < msg.length():
+		# Check for § or & as the formatting character
+		if (msg[i] == "\u00A7" or msg[i] == "&") and i + 1 < msg.length():
+			var code = msg[i + 1].to_lower()
+
+			# Close all open tags before applying new formatting
+			for tag in open_tags:
+				result += tag
+			open_tags.clear()
+
+			if color_map.has(code):
+				result += "[color=" + color_map[code] + "]"
+				open_tags.append("[/color]")
+			elif code == "l":
+				result += "[b]"
+				open_tags.append("[/b]")
+			elif code == "o":
+				result += "[i]"
+				open_tags.append("[/i]")
+			elif code == "n":
+				result += "[u]"
+				open_tags.append("[/u]")
+			elif code == "m":
+				result += "[s]"
+				open_tags.append("[/s]")
+			elif code == "r":
+				# Reset: close all tags, open_tags already cleared above
+				pass
+
+			i += 2
+		else:
+			result += msg[i]
+			i += 1
+
+	# Close any remaining open tags (in reverse order)
+	open_tags.reverse()
+	for tag in open_tags:
+		result += tag
+
+	return result
+
+
+func UpdateChatBox(msg: String) -> void:
+	var formatted_msg = parse_minecraft_formatting(msg)
+	chat_history.append(formatted_msg)
+	if chat_history.size() > 5:
+		chat_history = chat_history.slice(-5)
+	chat_lines.clear()
+	chat_lines.bbcode_enabled = true
+	chat_lines.text = "\n".join(chat_history)

@@ -25,6 +25,18 @@ content_margin_bottom = 2.0
 bg_color = Color(0, 1, 0, 1)
 corner_detail = 1
 
+[sub_resource type="Image" id="Image_sx1wb"]
+data = {
+"data": PackedByteArray(255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255),
+"format": "RGBA8",
+"height": 2,
+"mipmaps": false,
+"width": 2
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_nqd8y"]
+image = SubResource("Image_sx1wb")
+
 [sub_resource type="DPITexture" id="DPITexture_sx1wb"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"8\" height=\"8\"><circle cx=\"4\" cy=\"4\" r=\"1.5\" fill=\"#b2b2b2\" fill-opacity=\".25\"/></svg>
 "
@@ -84,6 +96,26 @@ ProgressBar/font_sizes/font_size = 16
 ProgressBar/fonts/font = ExtResource("1_sx1wb")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_sx1wb")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_nqd8y")
+RichTextLabel/colors/default_color = Color(1, 1, 1, 1)
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+RichTextLabel/colors/font_selected_color = Color(0, 0, 0, 0)
+RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
+RichTextLabel/colors/selection_color = Color(0.1, 0.1, 1, 0.8)
+RichTextLabel/colors/table_border = Color(0, 0, 0, 0)
+RichTextLabel/colors/table_even_row_bg = Color(0, 0, 0, 0)
+RichTextLabel/colors/table_odd_row_bg = Color(0, 0, 0, 0)
+RichTextLabel/constants/outline_size = 5
+RichTextLabel/font_sizes/bold_font_size = 16
+RichTextLabel/font_sizes/bold_italics_font_size = 16
+RichTextLabel/font_sizes/italics_font_size = 16
+RichTextLabel/font_sizes/mono_font_size = 16
+RichTextLabel/font_sizes/normal_font_size = 16
+RichTextLabel/fonts/bold_font = ExtResource("1_sx1wb")
+RichTextLabel/fonts/bold_italics_font = ExtResource("1_sx1wb")
+RichTextLabel/fonts/italics_font = ExtResource("1_sx1wb")
+RichTextLabel/fonts/mono_font = ExtResource("1_sx1wb")
+RichTextLabel/fonts/normal_font = ExtResource("1_sx1wb")
+RichTextLabel/icons/horizontal_rule = SubResource("ImageTexture_nqd8y")
 TextEdit/colors/background_color = Color(0, 0, 0, 0)
 TextEdit/colors/caret_background_color = Color(0, 0, 0, 1)
 TextEdit/colors/caret_color = Color(0.875, 0.875, 0.875, 1)
