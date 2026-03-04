@@ -2,10 +2,13 @@
 
 [ext_resource type="Shader" uid="uid://b41it1fgc3qbn" path="res://menu_background.gdshader" id="1_48xlc"]
 [ext_resource type="Texture2D" uid="uid://d2n5tdkt4bxu2" path="res://Textures/terrain.png" id="2_1ehe0"]
+[ext_resource type="Script" uid="uid://dpwe31aybufgi" path="res://Gui/quite_game.gd" id="4_ce3w2"]
+[ext_resource type="Script" uid="uid://we21dogllikn" path="res://Scripts/join_server.gd" id="4_n45e2"]
 [ext_resource type="Theme" uid="uid://2cfp4i5gebcy" path="res://Gui/minecraft_theme.tres" id="6_opfnp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ce3w2"]
 shader = ExtResource("1_48xlc")
+shader_parameter/brightness = 0.5
 
 [node name="Menu" type="Control" unique_id=2114037405]
 layout_mode = 3
@@ -38,12 +41,43 @@ grow_vertical = 2
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1031788572]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 theme = ExtResource("6_opfnp")
 alignment = 1
 
-[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=41474502]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=635485972]
 layout_mode = 2
 theme = ExtResource("6_opfnp")
+theme_override_constants/outline_size = 19
+theme_override_font_sizes/font_size = 54
+text = "Betadot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/VBoxContainer" unique_id=678855671]
+layout_mode = 2
+placeholder_text = "Server IP"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=994685403]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=41474502]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme = ExtResource("6_opfnp")
 text = "Join Server"
+script = ExtResource("4_n45e2")
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1185249377]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme = ExtResource("6_opfnp")
+text = "Quit Game"
+script = ExtResource("4_ce3w2")
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/Button" to="HBoxContainer/VBoxContainer/HBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/Button2" to="HBoxContainer/VBoxContainer/HBoxContainer/Button2" method="_on_pressed"]

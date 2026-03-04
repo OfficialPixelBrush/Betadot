@@ -25,6 +25,14 @@ content_margin_bottom = 2.0
 bg_color = Color(0, 1, 0, 1)
 corner_detail = 1
 
+[sub_resource type="DPITexture" id="DPITexture_sx1wb"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"8\" height=\"8\"><circle cx=\"4\" cy=\"4\" r=\"1.5\" fill=\"#b2b2b2\" fill-opacity=\".25\"/></svg>
+"
+
+[sub_resource type="DPITexture" id="DPITexture_nqd8y"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"8\" height=\"8\"><path fill=\"#b2b2b2\" fill-opacity=\".25\" d=\"M6 0v8h2V0zM1 0a1 1 0 0 0-.693 1.705L2.6 3.998.307 6.291A1 1 0 0 0 1.72 7.705l3-3a1 1 0 0 0 0-1.414l-3-3A1 1 0 0 0 1 0z\"/></svg>
+"
+
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
@@ -50,6 +58,7 @@ Button/styles/focus = ExtResource("2_sx1wb")
 Button/styles/hover = ExtResource("2_sx1wb")
 Button/styles/normal = ExtResource("2_sx1wb")
 Button/styles/pressed = ExtResource("3_nqd8y")
+Label/fonts/font = ExtResource("1_sx1wb")
 LineEdit/colors/caret_color = Color(0.95, 0.95, 0.95, 1)
 LineEdit/colors/clear_button_color = Color(0.875, 0.875, 0.875, 1)
 LineEdit/colors/clear_button_color_pressed = Color(1, 1, 1, 1)
@@ -75,3 +84,27 @@ ProgressBar/font_sizes/font_size = 16
 ProgressBar/fonts/font = ExtResource("1_sx1wb")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_sx1wb")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_nqd8y")
+TextEdit/colors/background_color = Color(0, 0, 0, 0)
+TextEdit/colors/caret_background_color = Color(0, 0, 0, 1)
+TextEdit/colors/caret_color = Color(0.875, 0.875, 0.875, 1)
+TextEdit/colors/current_line_color = Color(0.25, 0.25, 0.26, 0.8)
+TextEdit/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+TextEdit/colors/font_outline_color = Color(0, 0, 0, 1)
+TextEdit/colors/font_placeholder_color = Color(0.875, 0.875, 0.875, 0.6)
+TextEdit/colors/font_readonly_color = Color(0.875, 0.875, 0.875, 0.5)
+TextEdit/colors/font_selected_color = Color(0, 0, 0, 0)
+TextEdit/colors/search_result_border_color = Color(0.3, 0.3, 0.3, 0.4)
+TextEdit/colors/search_result_color = Color(0.3, 0.3, 0.3, 1)
+TextEdit/colors/selection_color = Color(0.5, 0.5, 0.5, 1)
+TextEdit/colors/word_highlighted_color = Color(0.5, 0.5, 0.5, 0.25)
+TextEdit/constants/caret_width = 1
+TextEdit/constants/line_spacing = 4
+TextEdit/constants/outline_size = 0
+TextEdit/constants/wrap_offset = 10
+TextEdit/font_sizes/font_size = 16
+TextEdit/fonts/font = ExtResource("1_sx1wb")
+TextEdit/icons/space = SubResource("DPITexture_sx1wb")
+TextEdit/icons/tab = SubResource("DPITexture_nqd8y")
+TextEdit/styles/focus = ExtResource("1_l4wxf")
+TextEdit/styles/normal = ExtResource("1_l4wxf")
+TextEdit/styles/read_only = ExtResource("1_l4wxf")

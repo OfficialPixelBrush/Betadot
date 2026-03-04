@@ -1,5 +1,7 @@
 shader_type canvas_item;
 
+uniform float brightness = 0.5f;
+
 void vertex() {
 	// Called for every vertex the material is visible on.
 }
@@ -14,7 +16,7 @@ void fragment() {
     uv *= tileSize;           // scale back to atlas size
     uv += tileCoord * tileSize; // offset to correct tile
 
-    COLOR = texture(TEXTURE, uv);
+    COLOR = texture(TEXTURE, uv)*vec4(brightness,brightness,brightness,1.0);
 }
 
 //void light() {
